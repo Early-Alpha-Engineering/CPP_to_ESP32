@@ -5,6 +5,57 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2024-12-19
+
+### 🎉 Enhanced Deploy Script
+
+#### Added
+- **Modern Deploy Script (`deploy.py`)**
+  - Complete rewrite using PlatformIO instead of ESP-IDF
+  - Command-line argument parsing with multiple options
+  - Smart PlatformIO and device detection
+  - Real-time build and upload progress display
+  - Built-in serial monitoring capabilities
+
+- **New Deploy Script Features**
+  - `--build-only` - Build without uploading
+  - `--upload-only` - Upload without building  
+  - `--monitor` - Start serial monitor after upload
+  - `--clean` - Clean build files before building
+  - `--port PORT` - Specify custom COM port
+  - `--version` - Show script version
+  - `--help` - Comprehensive help documentation
+
+- **Enhanced User Experience**
+  - Automatic PlatformIO installation detection
+  - Device connection verification with friendly warnings
+  - Clear success/failure messages with helpful tips
+  - Graceful error handling and troubleshooting guidance
+
+#### Changed
+- **Deploy Script Architecture**: Migrated from ESP-IDF to PlatformIO
+  - Removed complex ESP-IDF environment variable setup
+  - Simplified build process using `pio run` commands
+  - Eliminated toolchain path management issues
+  - Faster and more reliable builds
+
+- **Documentation**: Updated README.md
+  - Added comprehensive deploy.py usage guide
+  - Updated Quick Start section with deploy.py examples
+  - Enhanced workflow documentation
+  - Added advanced usage examples and command combinations
+
+#### Fixed
+- **Build Reliability**: Resolved ESP-IDF gdbinit.cmake issues completely
+- **Environment Setup**: No longer requires complex ESP-IDF configuration
+- **Cross-platform Support**: Works reliably on Windows, macOS, and Linux
+
+#### Technical Details
+- **Script Version**: Updated to v1.2.0
+- **Dependencies**: Only requires PlatformIO (installable via pip)
+- **Platform Support**: Full cross-platform compatibility
+- **Error Handling**: Comprehensive error detection and user guidance
+
 ## [1.1.0] - 2024-12-19
 
 ### 🎉 Major Platform Migration
@@ -133,6 +184,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
+- **v1.2.0** - Enhanced deploy script with PlatformIO integration
 - **v1.1.0** - PlatformIO migration with Arduino framework
 - **v1.0.0** - Initial release with ESP-IDF workflow
 

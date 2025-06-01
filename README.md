@@ -88,22 +88,24 @@ void loop() {
 
 ### 2. **Build & Deploy**
 ```bash
-# Build the project
-pio run
+# Using the enhanced deploy.py script (recommended)
+python deploy.py                    # Build and upload
+python deploy.py --monitor          # Build, upload, and monitor
 
-# Build and upload to ESP32
-pio run --target upload
-
-# Build, upload, and monitor
-pio run --target upload --target monitor
+# Using PlatformIO directly
+pio run --target upload             # Build and upload
+pio run --target upload --target monitor  # Build, upload, and monitor
 ```
 
 ### 3. **Monitor Output**
 ```bash
+# Using deploy.py with monitoring
+python deploy.py --upload-only --monitor
+
 # Using PlatformIO monitor
 pio device monitor --port COM5 --baud 115200
 
-# Or using the legacy monitor script
+# Using the legacy monitor script
 python monitor.py
 ```
 
@@ -112,9 +114,47 @@ python monitor.py
 ### Development Workflow
 
 1. **Write C++ Code**: Edit `src/main.cpp`
-2. **Build & Flash**: Run `pio run --target upload`
-3. **Monitor**: Run `pio device monitor` to see serial output
+2. **Build & Flash**: Run `python deploy.py` or `pio run --target upload`
+3. **Monitor**: Use `--monitor` flag or run `pio device monitor`
 4. **Iterate**: Repeat the cycle
+
+### Enhanced Deploy Script (`deploy.py`)
+
+The modern deploy script provides a comprehensive ESP32 development workflow:
+
+#### Basic Usage
+```bash
+python deploy.py                    # Build and upload
+python deploy.py --help             # Show all options
+```
+
+#### Advanced Options
+```bash
+# Build Operations
+python deploy.py --build-only       # Only build, don't upload
+python deploy.py --clean            # Clean build files first
+
+# Upload Operations  
+python deploy.py --upload-only      # Only upload (skip build)
+python deploy.py --port COM3        # Use different COM port
+
+# Monitoring
+python deploy.py --monitor          # Build, upload, and monitor
+python deploy.py --upload-only --monitor  # Upload and monitor
+
+# Combined Examples
+python deploy.py --clean --monitor  # Clean, build, upload, monitor
+python deploy.py --build-only --clean     # Clean and build only
+```
+
+#### Deploy Script Features
+- ✅ **PlatformIO Integration**: Modern, reliable build system
+- ✅ **Smart Detection**: Automatically detects PlatformIO and ESP32
+- ✅ **Flexible Workflow**: Build-only, upload-only, or combined operations
+- ✅ **Real-time Output**: Shows build and upload progress
+- ✅ **Serial Monitoring**: Built-in serial monitor with Ctrl+C support
+- ✅ **Error Handling**: Clear error messages and troubleshooting tips
+- ✅ **Cross-platform**: Works on Windows, macOS, and Linux
 
 ### PlatformIO Commands
 
@@ -143,15 +183,9 @@ pio device monitor --baud 9600       # Custom baud rate
 pio run --target upload --target monitor  # Upload and monitor
 ```
 
-### Legacy Scripts (ESP-IDF)
+### Legacy Scripts
 
-For reference, the original ESP-IDF scripts are still available:
-
-#### `deploy.py` - ESP-IDF Build & Flash
-- ✅ Checks ESP32 connection  
-- ✅ Compiles using ESP-IDF
-- ✅ Flashes firmware to ESP32
-- ⚠️ Requires ESP-IDF installation
+For reference, the legacy scripts are still available:
 
 #### `monitor.py` - Serial Monitor
 - 📡 Connects to ESP32 serial output
