@@ -14,7 +14,7 @@ import os
 
 VERSION = "1.0.0"
 ESP_IDF_PATH = r"C:\Espressif\frameworks\esp-idf-v5.4.1"
-ESP_PYTHON = r"C:\Espressif\python_env\idf5.4_py3.11_env\Scripts\python.exe"
+ESP_PYTHON = r"C:\Users\Eaea\.espressif\python_env\idf5.4_py3.12_env\Scripts\python.exe"
 IDF_PY = os.path.join(ESP_IDF_PATH, "tools", "idf.py")
 COM_PORT = "COM5"
 
@@ -35,35 +35,54 @@ def build_project():
     # Set environment variables
     env = os.environ.copy()
     env['IDF_PATH'] = ESP_IDF_PATH
+    env['IDF_PYTHON_ENV_PATH'] = os.path.dirname(os.path.dirname(ESP_PYTHON))
+    env['IDF_TARGET'] = 'esp32'
     
-    # Build command
+    # Add ESP-IDF tools to PATH (includes cmake and ninja)
+    esp_tools_path = os.path.join(ESP_IDF_PATH, "tools")
+    cmake_path = r"C:\Espressif\tools\cmake\3.30.2\bin"
+    ninja_path = r"C:\Espressif\tools\ninja\1.12.1"
+    toolchain_path = r"C:\Espressif\tools\xtensa-esp-elf\esp-14.2.0_20241119\xtensa-esp-elf\bin"
+    env['PATH'] = f"{os.path.dirname(ESP_PYTHON)};{cmake_path};{ninja_path};{toolchain_path};{esp_tools_path};{env.get('PATH', '')}"
+    
+    # Build command using the full Python path
     build_cmd = f'"{ESP_PYTHON}" "{IDF_PY}" build'
     
     print("🏗️  Building ESP32 project...")
+    print(f"Command: {build_cmd}")
     try:
-        result = subprocess.run(build_cmd, shell=True, check=True, 
-                              capture_output=True, text=True, env=env)
+        result = subprocess.run(build_cmd, shell=True, check=True, env=env, cwd=os.getcwd())
         print("✅ Build successful!")
         return True
     except subprocess.CalledProcessError as e:
-        print(f"❌ Build failed: {e.stderr}")
+        print(f"❌ Build failed with exit code: {e.returncode}")
         return False
 
 def flash_project():
     """Flash the project to ESP32"""
     env = os.environ.copy()
     env['IDF_PATH'] = ESP_IDF_PATH
+    env['IDF_PYTHON_ENV_PATH'] = os.path.dirname(os.path.dirname(ESP_PYTHON))
+    env['IDF_TARGET'] = 'esp32'
+    
+    # Add ESP-IDF tools to PATH (includes cmake and ninja)
+    esp_tools_path = os.path.join(ESP_IDF_PATH, "tools")
+    cmake_path = r"C:\Espressif\tools\cmake\3.30.2\bin"
+    ninja_path = r"C:\Espressif\tools\ninja\1.12.1"
+    toolchain_path = r"C:\Espressif\tools\xtensa-esp-elf\esp-14.2.0_20241119\xtensa-esp-elf\bin"
+    env['PATH'] = f"{os.path.dirname(ESP_PYTHON)};{cmake_path};{ninja_path};{toolchain_path};{esp_tools_path};{env.get('PATH', '')}"
     
     flash_cmd = f'"{ESP_PYTHON}" "{IDF_PY}" -p {COM_PORT} flash'
     
     print(f"📱 Flashing to {COM_PORT}...")
     try:
         result = subprocess.run(flash_cmd, shell=True, check=True,
-                              capture_output=True, text=True, env=env)
+                              capture_output=True, text=True, env=env, cwd=os.getcwd())
         print("✅ Flash successful!")
         return True
     except subprocess.CalledProcessError as e:
         print(f"❌ Flash failed: {e.stderr}")
+        print(f"Output: {e.stdout}")
         return False
 
 def check_connection():
