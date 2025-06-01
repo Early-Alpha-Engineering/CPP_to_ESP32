@@ -5,6 +5,64 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2024-12-19
+
+### 🎉 Major Platform Migration
+
+#### Added
+- **PlatformIO Integration**
+  - Complete migration from ESP-IDF to PlatformIO platform
+  - Arduino framework support for easier development
+  - Automatic platform and toolchain management
+  - Cross-platform compatibility (Windows, macOS, Linux)
+
+- **Enhanced Documentation**
+  - Comprehensive installation section with step-by-step instructions
+  - PlatformIO command reference
+  - Multiple installation methods (pip, installer script)
+  - WiFi connection example code
+  - Migration guide from ESP-IDF to PlatformIO
+
+- **New Project Structure**
+  - `platformio.ini` - Modern project configuration
+  - `src/main.cpp` - Arduino-style source code
+  - `.gitignore` - Proper build artifact exclusion
+  - Removed legacy ESP-IDF CMakeLists.txt files
+
+- **Improved Build System**
+  - One-command build and upload: `pio run --target upload`
+  - Built-in serial monitor: `pio device monitor`
+  - Automatic dependency management
+  - Faster, more reliable builds
+
+#### Changed
+- **Code Framework**: Migrated from ESP-IDF native to Arduino framework
+  - Replaced `app_main()` with `setup()` and `loop()`
+  - Using `Serial` instead of UART drivers
+  - Simplified API calls and better debugging support
+
+- **Project Structure**: 
+  - Moved `main/main.cpp` to `src/main.cpp`
+  - Replaced CMakeLists.txt with platformio.ini
+  - Updated deploy.py for better ESP-IDF environment handling
+
+- **Documentation**: Complete rewrite of README.md
+  - Added comprehensive installation guide
+  - Updated all examples to PlatformIO/Arduino framework
+  - Added troubleshooting for PlatformIO-specific issues
+
+#### Fixed
+- **Build Reliability**: Resolved ESP-IDF gdbinit.cmake compatibility issues
+- **Environment Setup**: Better Python environment detection and configuration
+- **Toolchain Management**: Automatic ESP32 toolchain installation via PlatformIO
+
+#### Technical Details
+- **Platform**: PlatformIO with Espressif 32 platform
+- **Framework**: Arduino for ESP32
+- **Board**: esp32dev (generic ESP32)
+- **Upload Speed**: 921600 baud
+- **Monitor Speed**: 115200 baud
+
 ## [1.0.0] - 2024-12-19
 
 ### 🎉 Initial Release
@@ -68,12 +126,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [ ] Unit testing framework
 - [ ] Continuous integration setup
 - [ ] GUI version of deployment tool
+- [ ] ESP32-S3 and ESP32-C3 board support
+- [ ] Library dependency examples
 
 ---
 
 ## Version History
 
-- **v1.0.0** - Initial release with complete ESP32 development workflow
+- **v1.1.0** - PlatformIO migration with Arduino framework
+- **v1.0.0** - Initial release with ESP-IDF workflow
 
 ---
 
